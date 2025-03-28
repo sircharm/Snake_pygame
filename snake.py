@@ -9,6 +9,9 @@ pygame.init()
 screen = pygame.display.set_mode((800, 400))
 clock = pygame.time.Clock()
 running = True
+dt = 0
+
+player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
 while running:
 
