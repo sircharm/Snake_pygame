@@ -14,15 +14,26 @@ while running:
 
   #checks if the X button was pressed and quits the main loop if so
   for event in pygame.event.get():
-    if event.type == pygame.quit():
-      running = False
+        if event.type == pygame.QUIT:
+            running = False
 
   screen.fill("white")
   
   #game goes here
+  pygame.draw.circle(screen, "black", player_pos, 40)
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_w]:
+        player_pos.y -= 300 * dt
+    if keys[pygame.K_s]:
+        player_pos.y += 300 * dt
+    if keys[pygame.K_a]:
+        player_pos.x -= 300 * dt
+    if keys[pygame.K_d]:
+        player_pos.x += 300 * dt
   
   pygame.display.flip()
   
-  clock.tick(60) #60 FPS
+  dt = clock.tick(60) / 1000 #60 FPS
 
 pygame.quit()
