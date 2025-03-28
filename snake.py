@@ -14,10 +14,10 @@ while running:
 
   #checks if the X button was pressed and quits the main loop if so
   for event in pygame.event.get():
-    if event.type == pygame.quit():
-      running = False
+        if event.type == pygame.QUIT:
+            running = False
 
-  screen.fill("white")
+  screen.fill("black")
   
   #game goes here
   
