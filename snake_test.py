@@ -3,4 +3,5 @@
 #I'm going to put a test that's always true here just so pytest won't raise an error
 #It raises an error when there are no tests
 
-assert 2 + 2 == 4
+def place_holder_test:
+  assert 2 + 2 == 4
