@@ -17,14 +17,13 @@ def snake_change_direction():
     return radial_velocity
 
 def snake_draw(rect_list):
-    #making the snake a bunch of squares for now
-    square_size = 8
-    #variables for height and width if I decide to change it individually later
+    # variables for height and width if I decide to change it individually later
     rect_height = square_size
     rect_width = square_size
 
     #puts a rect representing the head in the start of the list
     rect_list.insert(0, pygame.Rect((player_pos.x, player_pos.y, rect_width, rect_height)))
+
     #in the beginning, the snake's body grows out of its head
     #later, we check if the snake was already complete when the head was added
     #if it was, we need to remove the extra tail
@@ -33,9 +32,7 @@ def snake_draw(rect_list):
         rect_list.pop()
 
     for rect in rect_list:
-        pygame.draw.rect(screen, "black", rect)
-
-    return rect_list
+        pygame.draw.rect(screen, snake_color, rect)
 
 def snake_move():
     #moves the snake according to the velocity and direction
@@ -65,25 +62,36 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-#base variables
+#making the snake a bunch of squares for now
+square_size = 8
+
+#base snake values
+base_snake_speed = 75
+base_snake_size = 40
+base_change_direction_delay = 10
+
+#basic attributes
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-base_velocity = 150
-snake_size = 40
+snake_speed = base_snake_speed
+snake_size = base_snake_size
 snake_segments = []
-change_direction_delay = 75
+ignored_segments = 19
+snake_color = [0, 0, 0]
+change_direction_delay = base_change_direction_delay
+score = 0
 
 #logic for the snake picking a side and starting to move
 x = 0
 y = 1
 radial_choice = (
     #0 == left
-    (-abs(base_velocity), 0),
+    (-abs(snake_speed), 0),
     #1 == up
-    (0, -abs(base_velocity)),
+    (0, -abs(snake_speed)),
     #2 == right
-    (base_velocity, 0),
+    (snake_speed, 0),
     #3 == down
-    (0, base_velocity)
+    (0, snake_speed)
 )
 radial_velocity = radial_choice[random.randint(0, 3)]
 
@@ -98,21 +106,31 @@ while running:
 
     keys = pygame.key.get_pressed()
 
-    #draws the snake on screen and updates the list of segments
-    snake_segments = snake_draw(snake_segments)
+    for i in range(2):
+        #draws the snake on screen and updates the list of segments
+        snake_draw(snake_segments)
 
-    #moves the snake
-    player_pos.x, player_pos.y = snake_move()
+        #moves the snake
+        player_pos.x, player_pos.y = snake_move()
 
-    #changes direction if the player pressed the movement keys
-    #this algo checks if the snake didn't just change direction
-    #if it's able to change direction multiple times really fast,
-    #it looks really weird
-    if pygame.time.get_ticks() - last_direction_change > change_direction_delay:
-        last_direction_change, radial_velocity = pygame.time.get_ticks(), snake_change_direction()
+        #checks for collisions and restes the game if there is one
+        if snake_segments[0].collidelist(snake_segments[ignored_segments:]) >= 0:
+            snake_speed, snake_size, snake_segments = base_snake_speed, base_snake_size, []
+            radial_velocity = radial_choice[random.randint(0, 3)]
+            player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+            score = 0
 
+        #changes direction if the player pressed the movement keys
+        #this algo checks if the snake didn't just change direction
+        #if it's able to change direction multiple times really fast,
+        #it looks really weird
+        if pygame.time.get_ticks() - last_direction_change > change_direction_delay:
+            last_direction_change, radial_velocity = pygame.time.get_ticks(), snake_change_direction()
+
+    #this is needed to actually load and display the graphics
     pygame.display.flip()
 
+    #dt is needed to ensure consistency
     dt = clock.tick(60) / 1000 #60 FPS
 
 pygame.quit()
