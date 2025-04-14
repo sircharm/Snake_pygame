@@ -28,3 +28,21 @@ Before I dive into coding, I decided to search a little bit more about pygame. R
     - This shouldn't be a problem in my project, as all the graphics should be really simple.
   - I should keep my game as modular as possible, making individuals functions for scenes and mechanics
   - It was also recommended to use either VS Code or Pycharm to code. I'll look into Pycharm.
+
+## Initial steps (april 12 - april 13)
+
+With a basic example code from pygame's docs to work from, I started coding. The code created a white screen, a black circle and allowed the player to move the circle with wasd. At first, I made the circle pick a random direction and start moving. The snake moves at all times and now the player can steer it left and right.
+
+The next thing I did was changing the circle into a list of rectangles that were drawn on screen once every loop. I did this by creating a new rectangle after everytime the snake moves, which is it's head. The other rects are the body. This means the snake is constantly trying to grow over the limit, which means I also have to pop the last item in the list when appropriate. It worked well enough for now and looks good visually, but I'll probably have to change this behavior because it makes the rects intersect a lot. When dealing with collisions, I'll ignore some of the rects in the list. This shouldn't be too problematic since the snake's head can't physically collide with rects that are straight behind itself anyway. For learning about collisions, I searching for a few more Youtube videos:
+
+[Get Started in Pygame in 10 minutes!](https://www.youtube.com/watch?v=y9VG3Pztok8)
+[Pygame Event Handler Explained](https://www.youtube.com/watch?v=KR2zP6yuWAs&t=4s)
+  - Two videos from the same author. He talked mostly about simple stuff I already knew from the example code, but the explanation about the event handler was very important.
+  - I learned that pygame captures a bunch of useful stuff automatically that I can use, like mouse position and key presses, for example.
+  - I could maybe use that to make a simple GUI with a pause button. I could I also make a main menu for selecting the difficulty, but I think I'll do that when the project is almost done.
+
+[Collisions in Pygame - Beginner Tutorial](https://www.youtube.com/watch?v=BHr9jxKithk)
+  - In this video, I learned that collision detection is built into pygame. There are functions specifically to check for the collision of rects and lists of rects, which I think I'll be using the most.
+  - After watching it, I was able to introduce collision detection into the game. For now, I'm using it to reset some variables, which effectively resets the game.
+
+This was all I got done this weekend. The obvious next steps is introducing apples for the snake to eat, which will raise it's size, speed and give points. I also needs to display the score somehow. I'll probably need to grow the scree a little to make room for it.
