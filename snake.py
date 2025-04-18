@@ -58,26 +58,32 @@ screen_width = 400
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 last_direction_change = pygame.time.get_ticks()
+apple_timer = pygame.time.get_ticks()
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
 #making the snake a bunch of squares for now
 square_size = 8
+difficulty = 1.0
+difficulty_timer = pygame.time.get_ticks()
+raise_difficult_time = 3000
 
 #base snake values
-base_snake_speed = 75
+base_snake_speed = 75 * difficulty
 base_snake_size = 40
-base_change_direction_delay = 10
+base_change_direction_delay = 70
 
 #basic attributes
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 snake_speed = base_snake_speed
 snake_size = base_snake_size
-snake_segments = []
+snake_segments = [pygame.Rect((player_pos.x, player_pos.y, square_size, square_size))]
 ignored_segments = 19
 snake_color = [0, 0, 0]
 change_direction_delay = base_change_direction_delay
+apple_list = []
+apple_spawn_time = 5000
 score = 0
 
 #logic for the snake picking a side and starting to move
@@ -106,6 +112,9 @@ while running:
 
     keys = pygame.key.get_pressed()
 
+    for apple in apple_list:
+        pygame.draw.rect(screen, (255, 0, 0), apple)
+
     for i in range(2):
         #draws the snake on screen and updates the list of segments
         snake_draw(snake_segments)
@@ -115,10 +124,24 @@ while running:
 
         #checks for collisions and restes the game if there is one
         if snake_segments[0].collidelist(snake_segments[ignored_segments:]) >= 0:
-            snake_speed, snake_size, snake_segments = base_snake_speed, base_snake_size, []
-            radial_velocity = radial_choice[random.randint(0, 3)]
             player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+            snake_speed, snake_size, snake_segments = base_snake_speed, base_snake_size, [pygame.Rect((player_pos.x, player_pos.y, square_size, square_size))]
+            radial_velocity = radial_choice[random.randint(0, 3)]
             score = 0
+            apple_list = []
+
+        #checks for collision with apples
+        for index, apple in enumerate(apple_list):
+            if snake_segments[0].colliderect(apple):
+
+                score += round(10 * difficulty)
+                snake_speed += 10 * difficulty
+                snake_size += round(20 * difficulty)
+
+                print(f"Score: {score}\nDifficulty: {difficulty}")
+                apple_list.pop(index)
+                break
+
 
         #changes direction if the player pressed the movement keys
         #this algo checks if the snake didn't just change direction
@@ -126,6 +149,24 @@ while running:
         #it looks really weird
         if pygame.time.get_ticks() - last_direction_change > change_direction_delay:
             last_direction_change, radial_velocity = pygame.time.get_ticks(), snake_change_direction()
+
+    if pygame.time.get_ticks() - difficulty_timer > raise_difficult_time:
+        difficulty += 0.02
+        difficulty_timer = pygame.time.get_ticks()
+
+    if pygame.time.get_ticks() - apple_timer > apple_spawn_time:
+        while True:
+            temp_apple = pygame.Rect((random.randint(10, screen_width - 10),
+                                     random.randint(10, screen_height - 10),
+                                     square_size, square_size))
+
+            if temp_apple.collidelist(snake_segments) == -1:
+                break
+
+        apple_list.append(temp_apple)
+
+        apple_timer = pygame.time.get_ticks()
+
 
     #this is needed to actually load and display the graphics
     pygame.display.flip()
