@@ -9,7 +9,8 @@ List of things to implement
   - Done
 - Implement collision detection
   - Done for now, but will need some more work.
-- Introduce apples that give score, speed and size. Apples must only spawn on empty space 
+- Introduce apples that give score, speed and size. Apples must only spawn on empty space
+  - Done
 - Display the score
 - Make a main menu with the abillity to choose the difficulty
 
