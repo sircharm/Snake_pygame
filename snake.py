@@ -65,7 +65,8 @@ dt = 0
 
 #making the snake a bunch of squares for now
 square_size = 8
-difficulty = 1.0
+base_difficulty = 1.0
+difficulty = base_difficulty
 difficulty_timer = pygame.time.get_ticks()
 raise_difficult_time = 3000
 
@@ -128,6 +129,7 @@ while running:
             snake_speed, snake_size, snake_segments = base_snake_speed, base_snake_size, [pygame.Rect((player_pos.x, player_pos.y, square_size, square_size))]
             radial_velocity = radial_choice[random.randint(0, 3)]
             score = 0
+            difficulty = base_difficulty
             apple_list = []
 
         #checks for collision with apples
