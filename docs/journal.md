@@ -36,6 +36,7 @@ With a basic example code from pygame's docs to work from, I started coding. The
 The next thing I did was changing the circle into a list of rectangles that were drawn on screen once every loop. I did this by creating a new rectangle after everytime the snake moves, which is it's head. The other rects are the body. This means the snake is constantly trying to grow over the limit, which means I also have to pop the last item in the list when appropriate. It worked well enough for now and looks good visually, but I'll probably have to change this behavior because it makes the rects intersect a lot. When dealing with collisions, I'll ignore some of the rects in the list. This shouldn't be too problematic since the snake's head can't physically collide with rects that are straight behind itself anyway. For learning about collisions, I searching for a few more Youtube videos:
 
 [Get Started in Pygame in 10 minutes!](https://www.youtube.com/watch?v=y9VG3Pztok8)
+
 [Pygame Event Handler Explained](https://www.youtube.com/watch?v=KR2zP6yuWAs&t=4s)
   - Two videos from the same author. He talked mostly about simple stuff I already knew from the example code, but the explanation about the event handler was very important.
   - I learned that pygame captures a bunch of useful stuff automatically that I can use, like mouse position and key presses, for example.
@@ -46,3 +47,7 @@ The next thing I did was changing the circle into a list of rectangles that were
   - After watching it, I was able to introduce collision detection into the game. For now, I'm using it to reset some variables, which effectively resets the game.
 
 This was all I got done this weekend. The obvious next steps is introducing apples for the snake to eat, which will raise it's size, speed and give points. I also needs to display the score somehow. I'll probably need to grow the scree a little to make room for it.
+
+## Implementing random generation of apples (April 18 - )
+
+I created the logic for spawning apples, checking for collisions with them for updating the score and raising the size and speeed of the snake. At first I made the score be printed to the terminal just to see if it's working. The code also checks for collision between the newly-created apple with the snake before creating it because spawning an apple inside the snake would be frustrating for the player. If I add more obstacles, I should probably include them in this check as well.
