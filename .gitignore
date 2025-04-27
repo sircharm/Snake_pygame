@@ -1,0 +1,3 @@
+*.lnk
+scores.db
+/scenes/__pycache__

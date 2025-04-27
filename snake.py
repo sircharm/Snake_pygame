@@ -1,4 +1,6 @@
-from objects import *
+from objects import Snake
+from objects import AppleGroup
+from scenes import game_over
 
 import pygame
 
@@ -62,6 +64,8 @@ while running:
 
         #checks for collisions and restes the game if there is one
         if Player.segments[0].collidelist(Player.segments[ignored_segments:]) >= 0:
+            if Player.score > 0:
+                running = game_over(screen, Player.score, font)
             Player = Snake(initial_player_pos.x, initial_player_pos.y, base_snake_speed, base_snake_size, square_size)
             Apples = AppleGroup(square_size)
             difficulty = base_difficulty
