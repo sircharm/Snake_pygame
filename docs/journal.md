@@ -17,7 +17,7 @@ and makes it move with WASD.
   - If I need to use a different python version, I should use a virtual environment for that
 
 I think I won't really be using codespaces a lot for this project, since it requires some extra steps to display graphics and I can just do it locally.
-## Starting to study (march 29 - )
+## Starting to study (march 29)
 
 Before I dive into coding, I decided to search a little bit more about pygame. Right away, I found a Youtube video with some interesting information:
 
@@ -48,6 +48,20 @@ The next thing I did was changing the circle into a list of rectangles that were
 
 This was all I got done this weekend. The obvious next steps is introducing apples for the snake to eat, which will raise it's size, speed and give points. I also needs to display the score somehow. I'll probably need to grow the scree a little to make room for it.
 
-## Implementing random generation of apples (April 18 - )
+## Implementing random generation of apples (april 18)
 
 I created the logic for spawning apples, checking for collisions with them for updating the score and raising the size and speeed of the snake. At first I made the score be printed to the terminal just to see if it's working. The code also checks for collision between the newly-created apple with the snake before creating it because spawning an apple inside the snake would be frustrating for the player. If I add more obstacles, I should probably include them in this check as well.
+
+## Reorganizing the code (april 21)
+
+The logic has been working fine so far, but I now realized the code isn't very well organized. I thought about how I planned to introduce other snakes as enemies in the game at some point and how that would be way easier if I was using OOP, since NPC snakes wouldn't be that different from the main one. The functions I wrote will work better as methods anyway since I'm dealing with return values unecessarily. I already have a vague idea of how I'm going to go about this, but I think it's best to study a little first:
+
+[5 Tips To Organize Python Code](https://www.youtube.com/watch?v=e9yMYdnSlUA&t=1s)
+
+[Python OOP Tutorial 1: Classes and Instances](https://www.youtube.com/watch?v=ZDa-Z5JzLYM)
+
+[Python OOP Tutorial 2: Class Variables](https://www.youtube.com/watch?v=BJ-VvGyQxho)
+
+With the information of those videos in mind, I was able to create a new folder with separate python files for a Snake class and an AppleGroup class. The code is now much more organized and modular. When I have multiple snakes implemented, I plan on including all the snakes in a list so I can run a for loop for each method that needs to be executed.
+
+  - I also made a score display for the game
