@@ -65,3 +65,7 @@ The logic has been working fine so far, but I now realized the code isn't very w
 With the information of those videos in mind, I was able to create a new folder with separate python files for a Snake class and an AppleGroup class. The code is now much more organized and modular. When I have multiple snakes implemented, I plan on including all the snakes in a list so I can run a for loop for each method that needs to be executed.
 
   - I also made a score display for the game
+
+## Finishing the basics (april 27)
+
+Today I finished all the basic stuff I intended to implement. There's now persistent score keeping using sqlite3. There's still a lot to refine in the code and I want to introduce NPC snakes for the player to compete against, a main menu to select options, like having or not a outer wall. There is also still a lot of magic numbers in the code, which I'll have to solve at some point.
