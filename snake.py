@@ -4,40 +4,44 @@ from scenes import game_over
 
 import pygame
 
+SCREEN_HEIGHT = 400
+SCREEN_WIDTH = 400
+
+DISPLAY_SIZE = 50
+DISPLAY_COLOR = pygame.Color(55, 200, 55)
+
+BASE_DIFFICULTY = 1.0
+RAISE_DIFFICULTY_TIME = 3000
+
+BASE_SQUARE_SIZE = 8
+COLLISION_IGNORED_SEGMENTS = 15
+
+INITIAL_PLAYER_POS = pygame.Vector2(SCREEN_WIDTH / 2, ((SCREEN_HEIGHT + (DISPLAY_SIZE)) / 2))
+
 #pygame setup
-screen_height = 400
-screen_width = 400
-display_size = 50
 pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT + DISPLAY_SIZE))
 font = pygame.font.SysFont("Arial", 36)
-initial_player_pos = pygame.Vector2(screen_width / 2, ((screen_height + (display_size * 2)) / 2))
-screen = pygame.display.set_mode((screen_width, screen_height + display_size))
-last_direction_change = pygame.time.get_ticks()
 clock = pygame.time.Clock()
 running = True
+
+last_direction_change = pygame.time.get_ticks()
 dt = 0
 
 #display rect
-display = pygame.Rect((0, 0, screen_width, display_size))
-display_color = pygame.Color(55, 200, 55)
+display = pygame.Rect((0, 0, SCREEN_WIDTH, DISPLAY_SIZE))
 
 #difficulty variables
-base_difficulty = 1.0
-difficulty = base_difficulty
+difficulty = BASE_DIFFICULTY
 difficulty_timer = pygame.time.get_ticks()
-raise_difficult_time = 3000
 
 #base snake values
 base_snake_speed = 80 * difficulty
 base_snake_size = 40 * difficulty
 
-#basic attributes
-square_size = 8
-ignored_segments = 15
-
 #initialize the player and the apple group
-Player = Snake(initial_player_pos.x, initial_player_pos.y, base_snake_speed, base_snake_size, square_size)
-Apples = AppleGroup(square_size)
+Player = Snake(INITIAL_PLAYER_POS, base_snake_speed, base_snake_size, BASE_SQUARE_SIZE)
+Apples = AppleGroup(BASE_SQUARE_SIZE)
 
 while running:
 
@@ -48,7 +52,7 @@ while running:
 
     screen.fill((250, 250, 250))
     #draw the display
-    pygame.draw.rect(screen, display_color, display)
+    pygame.draw.rect(screen, DISPLAY_COLOR, display)
 
 
     keys = pygame.key.get_pressed()
@@ -60,15 +64,15 @@ while running:
         Player.snake_draw(screen)
 
         #moves the snake
-        Player.snake_move(dt, screen_width, screen_height, display_size)
+        Player.snake_move(dt, SCREEN_WIDTH, SCREEN_HEIGHT, DISPLAY_SIZE)
 
         #checks for collisions and restes the game if there is one
-        if Player.segments[0].collidelist(Player.segments[ignored_segments:]) >= 0:
+        if Player.segments[0].collidelist(Player.segments[COLLISION_IGNORED_SEGMENTS:]) >= 0:
             if Player.score > 0:
                 running = game_over(screen, Player.score, font)
-            Player = Snake(initial_player_pos.x, initial_player_pos.y, base_snake_speed, base_snake_size, square_size)
-            Apples = AppleGroup(square_size)
-            difficulty = base_difficulty
+            Player = Snake(INITIAL_PLAYER_POS, base_snake_speed, base_snake_size, BASE_SQUARE_SIZE)
+            Apples = AppleGroup(BASE_SQUARE_SIZE)
+            difficulty = BASE_DIFFICULTY
 
         #checks for collision with appleswa
         Player.apple_consume(Apples.apple_list, difficulty)
@@ -76,12 +80,12 @@ while running:
     # change direction
     Player.snake_change_direction(keys)
 
-    if pygame.time.get_ticks() - difficulty_timer > raise_difficult_time:
+    if pygame.time.get_ticks() - difficulty_timer > RAISE_DIFFICULTY_TIME:
         difficulty += 0.02
         difficulty_timer = pygame.time.get_ticks()
 
     #spawn apples
-    Apples.spawn(Player.segments, screen_width, screen_height, display_size)
+    Apples.spawn(Player.segments, SCREEN_WIDTH, SCREEN_HEIGHT, DISPLAY_SIZE)
 
     # Logic for displaying the text copied from Grok 3
     # Render the score text

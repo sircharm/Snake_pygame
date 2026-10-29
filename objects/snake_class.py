@@ -3,10 +3,9 @@ import random
 
 #currently the player class
 class Snake:
-    def __init__(self, position_x, position_y, speed, size, square_size):
+    def __init__(self, position, speed, size, square_size):
         self.square_size = square_size
-        self.position_x = position_x
-        self.position_y = position_y
+        self.position = position
         self.score = 0
 
         self.speed = speed
@@ -50,7 +49,7 @@ class Snake:
         rect_width = self.square_size
 
         # puts a rect representing the head in the start of the list
-        self.segments.insert(0, pygame.Rect((self.position_x, self.position_y, rect_width, rect_height)))
+        self.segments.insert(0, pygame.Rect((self.position.x, self.position.y, rect_width, rect_height)))
 
         #in the beginning, the snake's body grows out of its head
         #later, we check if the snake was already complete when the head was added
@@ -68,8 +67,8 @@ class Snake:
 
         # moves the snake according to the velocity and direction
         # it checks for both axis, but in reality one of them is 0
-        posx = self.radial_velocity[x] * dt + self.position_x
-        posy = self.radial_velocity[y] * dt + self.position_y
+        posx = self.radial_velocity[x] * dt + self.position.x
+        posy = self.radial_velocity[y] * dt + self.position.y
 
         # this block makes sure the snake wraps around the screen if appropriate
         if posx > screen_width:
@@ -81,8 +80,8 @@ class Snake:
         elif posy < 0 + display_size:
             posy = screen_height + posy
 
-        self.position_x = posx
-        self.position_y = posy
+        self.position.x = posx
+        self.position.y = posy
 
     def apple_consume(self, apple_list, difficulty):
         for index, apple in enumerate(apple_list):
