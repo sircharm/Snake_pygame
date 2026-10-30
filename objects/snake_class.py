@@ -1,15 +1,16 @@
 import pygame
 import random
-
+BASE_SPEED = 80
+BASE_SIZE = 40
 #currently the player class
 class Snake:
-    def __init__(self, position, speed, size, square_size):
+    def __init__(self, position, square_size, difficulty):
         self.square_size = square_size
         self.position = position
         self.score = 0
 
-        self.speed = speed
-        self.size = size
+        self.speed = BASE_SPEED * difficulty
+        self.size = BASE_SIZE * difficulty
         self.color = pygame.Color(0, 0, 0)
         self.segments = []
 
